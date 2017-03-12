@@ -5,10 +5,10 @@
     "ServerlessDeploymentBucket": {
       "Type": "AWS::S3::Bucket"
     },
-    "HelloLogGroup": {
+    "SNSLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/aws-nodejs-dev-hello"
+        "LogGroupName": "/aws/lambda/aws-nodejs-dev-SNS"
       }
     },
     "IamRoleLambdaExecution": {
@@ -53,7 +53,7 @@
                   "Resource": [
                     {
                       "Fn::GetAtt": [
-                        "HelloLogGroup",
+                        "SNSLogGroup",
                         "Arn"
                       ]
                     }
@@ -71,7 +71,7 @@
                         [
                           {
                             "Fn::GetAtt": [
-                              "HelloLogGroup",
+                              "SNSLogGroup",
                               "Arn"
                             ]
                           },
@@ -99,17 +99,17 @@
         }
       }
     },
-    "HelloLambdaFunction": {
+    "SNSLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/aws-nodejs/dev/1489263429483-2017-03-11T20:17:09.483Z/aws-nodejs.zip"
+          "S3Key": "serverless/aws-nodejs/dev/1489317647626-2017-03-12T11:20:47.626Z/aws-nodejs.zip"
         },
-        "FunctionName": "aws-nodejs-dev-hello",
-        "Handler": "handler.hello",
+        "FunctionName": "aws-nodejs-dev-SNS",
+        "Handler": "handler.SNS",
         "MemorySize": 1024,
         "Role": {
           "Fn::GetAtt": [
@@ -124,14 +124,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "HelloLambdaVersionjm4ZInlTlLdJ6CNHplZotU7DckkkYoWEFFkCS7S8": {
+    "SNSLambdaVersionTOuLbJJ0HFjbWO6y47x0TcfIlwiJJttErzotpT8tqDw": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
-          "Ref": "HelloLambdaFunction"
+          "Ref": "SNSLambdaFunction"
         },
-        "CodeSha256": "jm4ZInlTlLdJ6/CNHplZot+U7DckkkYoWEFFkCS7+S8="
+        "CodeSha256": "TOuLbJJ0HFjbWO6y47x0TcfIlwiJJttErzotpT8tqDw="
       }
     },
     "ApiGatewayRestApi": {
@@ -140,7 +140,7 @@
         "Name": "dev-aws-nodejs"
       }
     },
-    "ApiGatewayResourceHello": {
+    "ApiGatewayResourceSns": {
       "Type": "AWS::ApiGateway::Resource",
       "Properties": {
         "ParentId": {
@@ -149,13 +149,13 @@
             "RootResourceId"
           ]
         },
-        "PathPart": "hello",
+        "PathPart": "sns",
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
       }
     },
-    "ApiGatewayMethodHelloOptions": {
+    "ApiGatewayMethodSnsOptions": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "AuthorizationType": "NONE",
@@ -194,20 +194,20 @@
           ]
         },
         "ResourceId": {
-          "Ref": "ApiGatewayResourceHello"
+          "Ref": "ApiGatewayResourceSns"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
       }
     },
-    "ApiGatewayMethodHelloGet": {
+    "ApiGatewayMethodSnsGet": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "GET",
         "RequestParameters": {},
         "ResourceId": {
-          "Ref": "ApiGatewayResourceHello"
+          "Ref": "ApiGatewayResourceSns"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
@@ -227,7 +227,7 @@
                 ":lambda:path/2015-03-31/functions/",
                 {
                   "Fn::GetAtt": [
-                    "HelloLambdaFunction",
+                    "SNSLambdaFunction",
                     "Arn"
                   ]
                 },
@@ -239,7 +239,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1489263429493": {
+    "ApiGatewayDeployment1489317647638": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -248,15 +248,15 @@
         "StageName": "dev"
       },
       "DependsOn": [
-        "ApiGatewayMethodHelloGet"
+        "ApiGatewayMethodSnsGet"
       ]
     },
-    "HelloLambdaPermissionApiGateway": {
+    "SNSLambdaPermissionApiGateway": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
           "Fn::GetAtt": [
-            "HelloLambdaFunction",
+            "SNSLambdaFunction",
             "Arn"
           ]
         },
@@ -291,10 +291,10 @@
         "Ref": "ServerlessDeploymentBucket"
       }
     },
-    "HelloLambdaFunctionQualifiedArn": {
+    "SNSLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "HelloLambdaVersionjm4ZInlTlLdJ6CNHplZotU7DckkkYoWEFFkCS7S8"
+        "Ref": "SNSLambdaVersionTOuLbJJ0HFjbWO6y47x0TcfIlwiJJttErzotpT8tqDw"
       }
     },
     "ServiceEndpoint": {
